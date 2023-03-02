@@ -18,11 +18,15 @@ public class ServiceInstance {
         this.lease = new Lease();
     }
 
+    public void renew(){
+        this.lease.renew();
+    }
+
     /**
      * 契约
      * 维护了一个服务实例和当前的注册中心的关系，包括了心跳时间
      */
-    public static class Lease {
+    private class Lease {
         private Long latestHeartbeatTime=System.currentTimeMillis();
 
         /**
@@ -31,6 +35,7 @@ public class ServiceInstance {
          */
         public void renew() {
             this.latestHeartbeatTime = System.currentTimeMillis();
+            System.out.println("服务实例【"+serviceInstanceId+"】，进行续约："+latestHeartbeatTime);
         }
 
         @Override

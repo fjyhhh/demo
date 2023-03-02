@@ -42,8 +42,7 @@ public class RegisterServerController {
         try{
             ServiceInstance serviceInstance = registry.getServiceInstance(heartbeatRequest.getServiceName()
                     ,heartbeatRequest.getServiceInstanceId());
-            Lease lease = serviceInstance.getLease();
-            lease.renew();
+            serviceInstance.renew();
             heartbeatResponse.setStatus(HeartbeatResponse.SUCCESS);
         }catch (Exception e){
             e.printStackTrace();
