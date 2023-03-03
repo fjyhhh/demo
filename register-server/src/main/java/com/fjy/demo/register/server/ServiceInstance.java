@@ -6,6 +6,7 @@ package com.fjy.demo.register.server;
  * 契约信息
  */
 public class ServiceInstance {
+    private static final Long NOT_ALIVE_PERIOD = 90*1000L;
     private String servicename;
     private String ip;
     private String hostname;
@@ -27,6 +28,7 @@ public class ServiceInstance {
      * 维护了一个服务实例和当前的注册中心的关系，包括了心跳时间
      */
     private class Lease {
+
         private Long latestHeartbeatTime=System.currentTimeMillis();
 
         /**
@@ -38,12 +40,29 @@ public class ServiceInstance {
             System.out.println("服务实例【"+serviceInstanceId+"】，进行续约："+latestHeartbeatTime);
         }
 
+        /**
+         * 判断当前的服务实例的契约是否还存在
+         * @return
+         */
+        public Boolean isAlive(){
+            Long currentTime = System.currentTimeMillis();
+            if(currentTime-latestHeartbeatTime>NOT_ALIVE_PERIOD ){
+                System.out.println("服务实例【"+serviceInstanceId+"】,不在存活");
+                return false;
+            }else{
+                System.out.println("服务实例【"+serviceInstanceId+"】,保持存活");
+                return true;
+            }
+        }
         @Override
         public String toString() {
             return "Lease{" +
                     "latestHeartbeatTime=" + latestHeartbeatTime +
                     '}';
         }
+    }
+    public Boolean isAlive(){
+        return lease.isAlive();
     }
 
     public String getServicename() {

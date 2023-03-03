@@ -1,5 +1,6 @@
 package com.fjy.demo.register.server;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,24 @@ public class Registry {
     public ServiceInstance getServiceInstance(String serviceName,String serviceInstanceId){
         Map<String,ServiceInstance> serviceInstanceMap = registry.get(serviceName);
         return serviceInstanceMap.get(serviceInstanceId);
+    }
+
+    /**
+     * 获取整个注册表
+     * @return
+     */
+    public Map<String, Map<String,ServiceInstance>> getRegistry(){
+        return registry;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public void remove(String serviceName,String serviceInstanceId){
+        System.out.println("服务实例【"+serviceInstanceId+"】,从注册表中进行摘除");
+        Map<String,ServiceInstance> serviceInstanceMap = registry.get(serviceName);
+        serviceInstanceMap.remove(serviceInstanceId);
     }
     public static Registry getInstance(){
         return instance;
